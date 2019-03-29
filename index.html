@@ -76,7 +76,8 @@
             var inc3=fogMax;
             var loadInc=200;
             var objScale=1;
-            var loadGap = 8;
+            var loadGap = 2,
+                initLoadGap = 6;
             
             var faceX,
                 faceY,
@@ -268,13 +269,6 @@
 //                                console.log("value:", -(300-offset+offset*Math.sin(inc+1)));
                                 objContainer.position.z = -(300-offset+offset*Math.sin(inc+1));
                             } else if (inc>3.5 && inc<5.0 && age==0){
-                                
-                                var rot = -0.004*Math.sin(5*inc);
-                                var trans = 2*rectLength;
-                                var axis = new THREE.Vector3(1,1,0);
-
-                                console.log("ROTATING");
-
                                 mesh.position.x +=-.85;
                                 objContainer.position.x +=-.85;
 
@@ -286,7 +280,6 @@
                                 faceZ=objContainer.position.z;                                
                                 
                                 camera.zoom+=.01;
-                                camera.rotation.y = 40*rot;
                                 camera.updateProjectionMatrix();
                              
                             } else if (age>0) {
@@ -304,7 +297,14 @@
                             inc2+=.01;
                             
 //                            console.log(inc, "AGE", age);
-                            if(inc>loadGap && age<4) {
+                            if(inc>initLoadGap && age==0) {
+                                inc=0;
+                                inc2=0;
+                                age++;
+                                scene.remove(objContainer);
+                                group.remove(mesh);
+                                app.initContent();
+                            } else if (inc>loadGap && age>0 && age<4) {
                                 inc=0;
                                 inc2=0;
                                 age++;
